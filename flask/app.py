@@ -7,7 +7,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///todo.db"
 db = SQLAlchemy(app)
 
 class Todo(db.Model):
-    sno = db.Column(db.Integer, primary_key = True)
+    sno = db.Column(db.Integer, primary_key = True, autoincrement = True)
     title = db.Column(db.String(200), nullable = False)
     desc = db.Column(db.String(500), nullable = False)
     dateCreated = db.Column(db.DateTime, default = datetime.utcnow)
@@ -18,7 +18,10 @@ class Todo(db.Model):
 
 
 @app.route('/')
-def hello_world():
+def home_page():
+    todo = Todo(title = "Learn Python web Dev", desc = "Flask, Django, Mongo")
+    db.session.add(todo)
+    db.session.commit()
     return render_template('index.html')
     # return 'Hello World'
 
