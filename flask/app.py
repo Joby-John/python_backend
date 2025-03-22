@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -17,16 +17,25 @@ class Todo(db.Model):
         return f"{self.sno} - {self.title}"
 
 
-@app.route('/')
+@app.route('/', methods = ['GET', 'POST'])
 def home_page():
-    todo = Todo(title = "Learn Python web Dev", desc = "Flask, Django, Mongo")
-    db.session.add(todo)
-    db.session.commit()
-    return render_template('index.html')
+    if request.method=='POST':
+        title = request.form['title']
+        desc = request.form['desc']
+
+        todo = Todo(title = title, desc = desc)
+        db.session.add(todo)
+        db.session.commit()
+
+    alltodo = Todo.query.all()
+    print(alltodo)
+    return render_template('index.html', alltodo = alltodo)
     # return 'Hello World'
 
-@app.route('/products')
+@app.route('/show')
 def products():
+    alltodo = Todo.query.all()
+    print(alltodo)
     return 'This is products page'
 
 if __name__ == "__main__":
