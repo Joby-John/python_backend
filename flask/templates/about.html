@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% block title %}
+About
+{% endblock title %}
+
+{% block styles %}
+    <style>
+        body {
+            background: linear-gradient(to bottom, #ffdde1, #ee9ca7);
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: auto; /* Allow scrolling on small screens */
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            margin: 20px auto;
+            position: relative;
+            z-index: 10; /* Higher z-index to ensure it stays above hearts */
+        }
+        h1 {
+            color: #d81b60;
+            font-family: 'Georgia', serif;
+            font-size: 2.5rem;
+        }
+        p {
+            color: #555;
+            line-height: 1.8;
+        }
+        .heart {
+            color: #e91e63;
+            font-size: 1.5rem;
+        }
+        .highlight {
+            color: #f06292;
+            font-weight: bold;
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Floating Hearts Animation */
+        .floating-heart {
+            position: absolute;
+            font-size: 24px;
+            color: #e91e63;
+            animation: float 6s infinite ease-in-out;
+            z-index: 1; /* Lower z-index to keep hearts below the content */
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-100px) translateX(100px) rotate(180deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(0) translateX(0) rotate(360deg);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px; /* Reduce padding for smaller screens */
+                margin: 10px; /* Reduce margin for smaller screens */
+                border-radius: 10px; /* Smaller border radius */
+            }
+
+            h1 {
+                font-size: 2rem; /* Smaller heading for mobile */
+            }
+
+            p {
+                font-size: 0.9rem; /* Smaller text for mobile */
+                line-height: 1.6; /* Adjust line height for readability */
+            }
+
+            .floating-heart {
+                font-size: 18px; /* Smaller hearts for mobile */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem; /* Even smaller heading for very small screens */
+            }
+
+            p {
+                font-size: 0.85rem; /* Even smaller text for very small screens */
+            }
+
+            .container {
+                padding: 15px; /* Further reduce padding */
+            }
+        }
+    </style>
+{% endblock styles %}
+
+{% block content %}
+    <!-- About Section -->
+    <div class="container">
+        <h1 class="text-center">About Your To-Do App <span class="heart">♥</span></h1>
+        <p class="text-center mt-4">
+            My Dearest, when I built this app into existence, every thought was of you—my heart’s truest keeper. It’s crafted solely for you, adorned with your favorite things, a reflection of the beauty you bring to my world. This isn’t just an app; it’s my love made tangible, a vow to embrace your dreams and lift your spirit through every step of our journey.
+        </p>
+        <p class="text-center">
+            I see the brilliance in your hard work, the fire you pour into building our future, and I’m endlessly enchanted by you. Every ounce of my effort, every whisper of my love, is stitched into this creation—because I ache to see us thrive, to watch you bloom into every dream you’ve ever held. This app is your companion, a tender embrace to keep your precious time in harmony, your tasks a dance of triumph, so you can shine without the weight of stress.
+        </p>
+        <p class="text-center">
+            And when the world feels heavy, my darling, know this: I am forever by your side, your unwavering haven, your loudest cheer. Use this app wrapped in my devotion, for every task you conquer is a star we place together in the sky of our love. I adore you beyond measure, and I’ll love you fiercely, eternally—my sweetest everything.
+        </p>
+        <p class="text-center mt-4 fst-italic">Forever yours, Chachan</p>
+    </div>
+
+    <!-- Floating Hearts -->
+    <div id="hearts-container"></div>
+
+    <!-- Bootstrap JS (optional, only if you add interactive elements later) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript to Generate Floating Hearts -->
+    <script>
+        // Function to create a floating heart
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '♥';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = Math.random() * window.innerHeight + 'px';
+            heart.style.animationDuration = Math.random() * 4 + 2 + 's'; // Randomize animation speed
+            document.getElementById('hearts-container').appendChild(heart);
+
+            // Remove heart after animation ends to prevent DOM overload
+            setTimeout(() => {
+                heart.remove();
+            }, 6000); // Match the animation duration
+        }
+
+        // Generate hearts at regular intervals
+        let heartInterval = setInterval(createHeart, 500); // Create a new heart every 500ms
+
+        // Adjust heart generation for smaller screens
+        if (window.innerWidth <= 768) {
+            clearInterval(heartInterval); // Clear the previous interval
+            heartInterval = setInterval(createHeart, 1000); // Create fewer hearts on mobile
+        }
+    </script>
+{% endblock content %}

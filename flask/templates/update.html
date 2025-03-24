@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Home
+   Update
 {% endblock title %}
+
 {% block styles %}
     <style>
         body {
@@ -58,7 +59,7 @@
         }
 
         .floating-teddy {
-            width: 120px;
+            width: 150px;
             height: auto;
             animation: float 4s infinite ease-in-out; /* Updated animation */
             z-index: 20; /* Higher z-index to appear above the table */
@@ -109,62 +110,19 @@
     
     <!-- Add Todo Form -->
     <div class="container">
-        <h2>Add a Todo <span class="heart">♥</span></h2>
+        <h2>Update Todo <span class="heart">♥</span></h2>
         <hr>
-        <form action="/" method="POST">
+        <form action="/update/{{rowToUpdate.sno}}" method="POST">
             <div class="mb-3">
                 <label for="title" class="form-label">Add Task</label>
-                <input type="text" class="form-control" name="title" id="title" aria-describedby="emailHelp">
+                <input type="text" class="form-control" name="title" id="title" value="{{rowToUpdate.title}}" aria-describedby="emailHelp">
             </div>
             <div class="mb-3">
                 <label for="desc" class="form-label">Task Description</label>
-                <input type="text" class="form-control" name="desc" id="desc">
+                <input type="text" class="form-control" name="desc" id="desc" value="{{rowToUpdate.desc}}">
             </div>
-            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="submit" class="btn btn-success">Update</button>
         </form>
-    </div>
-
-    <!-- Todo List -->
-    <div class="container my-5">
-        <!-- Flexbox container for heading and Shitzu -->
-        <div class="heading-container">
-            <h2>Your Todos <span class="heart">♥</span></h2>
-            <div class="floating-teddy">
-                <img src="{{ url_for('static', filename='images/shitzu.png') }}" alt="Shitzu">
-            </div>
-        </div>
-        <hr>
-        
-        {% if alltodo|length == 0 %}
-        <div class="alert alert-info" role="alert">Start by adding your tasks.</div>
-        {% else %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Sno</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Action</th>
-                </tr>
-            </thead>
-            
-            <tbody>
-                {% for todo in alltodo %}
-                <tr>
-                    <th scope="row">{{ loop.index }}</th>
-                    <td>{{ todo.title }}</td>
-                    <td>{{ todo.desc }}</td>
-                    <td>{{ todo.formatted_time }}</td>
-                    <td>
-                        <a href="/update/{{ todo.sno }}" type="button" class="btn btn-outline-warning btn-sm mx-1">Update</a>
-                        <a href="/delete/{{ todo.sno }}" type="button" class="btn btn-outline-success btn-sm mx-1">Done</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% endif %}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
